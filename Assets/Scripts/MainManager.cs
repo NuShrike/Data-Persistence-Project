@@ -4,13 +4,17 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+using TMPro;
+using System;
+
 public class MainManager : MonoBehaviour
 {
     public Brick BrickPrefab;
     public int LineCount = 6;
     public Rigidbody Ball;
 
-    public Text ScoreText;
+    public TextMeshProUGUI ScoreText;
+    public TextMeshProUGUI HighScoreText;
     public GameObject GameOverText;
     
     private bool m_Started = false;
@@ -45,7 +49,7 @@ public class MainManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 m_Started = true;
-                float randomDirection = Random.Range(-1.0f, 1.0f);
+                float randomDirection = UnityEngine.Random.Range(-1.0f, 1.0f);
                 Vector3 forceDir = new Vector3(randomDirection, 1, 0);
                 forceDir.Normalize();
 
@@ -65,7 +69,7 @@ public class MainManager : MonoBehaviour
     void AddPoint(int point)
     {
         m_Points += point;
-        ScoreText.text = $"Score : {m_Points}";
+        ScoreText.text = $"{m_Points:0000000}";
     }
 
     public void GameOver()
