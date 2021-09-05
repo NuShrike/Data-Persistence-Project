@@ -7,11 +7,13 @@ using UnityEngine.Events;
 public class Brick : MonoBehaviour
 {
     public UnityEvent<int> onDestroyed;
+    private MeshRenderer _meshRenderer;
     
     public int PointValue;
 
     void Start()
     {
+        _meshRenderer = GetComponent<MeshRenderer>();
         var renderer = GetComponentInChildren<Renderer>();
 
         MaterialPropertyBlock block = new MaterialPropertyBlock();
@@ -36,7 +38,9 @@ public class Brick : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         onDestroyed.Invoke(PointValue);
-        
+
+        // hide the brick but still let collisions happen
+        _meshRenderer.enabled = false;
         //slight delay to be sure the ball have time to bounce
         Destroy(gameObject, 0.2f);
     }
