@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 using TMPro;
-using System;
 
 public class MainManager : MonoBehaviour
 {
@@ -14,7 +12,10 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public TextMeshProUGUI ScoreText;
+
     public TextMeshProUGUI HighScoreText;
+    public TextMeshProUGUI HighScoreName;
+
     public GameObject GameOverText;
     
     private bool m_Started = false;
@@ -22,7 +23,6 @@ public class MainManager : MonoBehaviour
     
     private bool m_GameOver = false;
 
-    
     // Start is called before the first frame update
     void Start()
     {
@@ -35,12 +35,13 @@ public class MainManager : MonoBehaviour
             for (int x = 0; x < perLine; ++x)
             {
                 Vector3 position = new Vector3(-1.5f + step * x, 2.5f + i * 0.3f, 0);
-                Debug.Log("i:" + i + " x:" + x + " BrickPrefab: " + BrickPrefab);
                 var brick = Instantiate(BrickPrefab, position, Quaternion.identity);
                 brick.PointValue = pointCountArray[i];
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
+
+        UpdateHighScoreDisplay();
     }
 
     private void Update()
@@ -78,5 +79,27 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+
+        UpdateHighScore();
+    }
+
+    void UpdateHighScore()
+    {
+        var gameState = GameState.Instance;
+        if (gameState.HighScore < m_Points)
+        {
+            gameState.HighScore = (uint)m_Points;
+            gameState.HighScorePlayerName = gameState.PlayerName;
+            gameState.SaveStateToStorage();
+
+            UpdateHighScoreDisplay();
+        }
+    }
+
+    void UpdateHighScoreDisplay()
+    {
+        var gameState = GameState.Instance;
+        HighScoreText.text = $"{gameState.HighScore:0000000}";
+        HighScoreName.text = gameState.HighScorePlayerName;
     }
 }

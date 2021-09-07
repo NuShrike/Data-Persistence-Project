@@ -15,30 +15,14 @@ public class MenuUIHandler : MonoBehaviour
     void Start()
     {
         NameInput.onEndEdit.AddListener(OnEndEdit);
-        //NameInput.onSubmit.AddListener(OnSubmit);
-        //NameInput.onValueChanged.AddListener(OnValueChanged);
+
+        NameInput.text = GameState.Instance.PlayerName;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnEndEdit(string playerName)
     {
-        
+        GameState.Instance.PlayerName = playerName;
     }
-
-    //public void OnValueChanged(string text)
-    //{
-    //    Debug.Log("OnValueChanged: " + text);
-    //}
-
-    public void OnEndEdit(string text)
-    {
-        Debug.Log("OnEndEdit: " + text);
-    }
-
-    //public void OnSubmit(string text)
-    //{
-    //    Debug.Log("OnSubmit: " + text);
-    //}
 
     public void OnStart()
     {
@@ -47,6 +31,7 @@ public class MenuUIHandler : MonoBehaviour
 
     public void OnQuit()
     {
+        GameState.Instance.SaveStateToStorage();
 
 #if UNITY_EDITOR
         EditorApplication.ExitPlaymode();
