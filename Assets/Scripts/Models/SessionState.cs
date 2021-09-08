@@ -1,5 +1,10 @@
 internal class SessionState
 {
-    public uint HighScore { get; set; } = 0;
-    public string HighScore_PlayerName { get; set; } = "";
+    public HighScoresList hsList { get; set; }
+
+    public SessionState Init()
+    {   // 'manual' initialization when not created by Json.NET
+        hsList = new HighScoresList();
+        return this;
+    }
 }

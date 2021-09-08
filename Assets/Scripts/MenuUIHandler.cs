@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,8 +12,10 @@ public class MenuUIHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        NameInput.onEndEdit.AddListener(OnEndEdit);
+        Cursor.visible = true;
+        Application.targetFrameRate = 30;
 
+        NameInput.onEndEdit.AddListener(OnEndEdit);
         NameInput.text = GameState.Instance.PlayerName;
     }
 
@@ -26,13 +26,14 @@ public class MenuUIHandler : MonoBehaviour
 
     public void OnStart()
     {
-        SceneManager.LoadScene("main");
+        if (!string.IsNullOrEmpty(GameState.Instance.PlayerName))
+        {   // require name-entry before game can start
+            SceneManager.LoadScene("main");
+        }
     }
 
     public void OnQuit()
     {
-        GameState.Instance.SaveStateToStorage();
-
 #if UNITY_EDITOR
         EditorApplication.ExitPlaymode();
 #else

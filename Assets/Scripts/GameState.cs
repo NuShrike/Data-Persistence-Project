@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 
 using Newtonsoft.Json;
@@ -8,17 +6,7 @@ using UnityEngine;
 
 public class GameState : SingletonMonoBehavior<GameState>
 {
-    // NOTE: write doesn't work with the => accessor?
-    //public uint HighScore => _state.HighScore;
-
-    public uint HighScore {
-        get { return _state.HighScore; }
-        set { _state.HighScore = value; }
-    }
-    public string HighScorePlayerName {
-        get { return _state.HighScore_PlayerName; }
-        set { _state.HighScore_PlayerName = value; }
-    }
+    internal HighScoresList HighScoresList { get => _state.hsList; }
 
     private const string _saveFileName = "/sessionState.json";
 
@@ -43,21 +31,30 @@ public class GameState : SingletonMonoBehavior<GameState>
     {
         string path = Application.persistentDataPath + _saveFileName;
 
+        // delete file whenever data-format changes
+#pragma warning disable CS0162 // Unreachable code detected
+        if (false) {
+            File.Delete(path);
+        }
+#pragma warning restore CS0162 // Unreachable code detected
+
         if (File.Exists(path)) {
             string json = File.ReadAllText(path);
+            //Debug.Log("json: " + json);
             var sessionState = JsonConvert.DeserializeObject<SessionState>(json);
             if (null != sessionState) {
                 _state = sessionState;
             }
         }
         else {
-            _state = new SessionState();
+            _state = new SessionState().Init();
         }
     }
 
     public void SaveStateToStorage()
     {
         string json = JsonConvert.SerializeObject(_state);
+        //Debug.Log("SaveStateToStorage: " + json);
         File.WriteAllText(Application.persistentDataPath + _saveFileName, json);
     }
 }

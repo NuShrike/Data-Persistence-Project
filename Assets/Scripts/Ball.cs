@@ -25,6 +25,8 @@ public class Ball : MonoBehaviour
             velocity += velocity.y > 0 ? Vector3.up * 0.5f : Vector3.down * 0.5f;
         }
 
+        // NOTE: using a squashed-cylinder mesh-collider on the paddle to encourage non-vertical rebound vectors
+
         //max velocity
         if (velocity.magnitude > 3.0f)
         {
