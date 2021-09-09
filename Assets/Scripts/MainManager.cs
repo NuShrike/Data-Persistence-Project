@@ -16,6 +16,8 @@ public class MainManager : MonoBehaviour
     public TextMeshProUGUI HighScoreText;
     public TextMeshProUGUI HighScoreName;
 
+    public TextMeshProUGUI ModeInstructions;
+
     public AudioSource AudioSource;
     public AudioClip StartGameClip;
     public AudioClip WinGameClip;
@@ -24,10 +26,11 @@ public class MainManager : MonoBehaviour
     private int m_Points;
     
     private bool m_GameOver = false;
+    private bool _gamePaused = false;
+
 #if UNITY_EDITOR
     private bool _logBricks;
 #endif
-
     private int brickCount;
 
     // Start is called before the first frame update
@@ -62,6 +65,7 @@ public class MainManager : MonoBehaviour
         }
 
         Cursor.visible = false;
+        _gamePaused = false;
         _logBricks = false;
     }
 
@@ -71,10 +75,8 @@ public class MainManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                QualitySettings.vSyncCount = 1;
-                Application.targetFrameRate = 60;
+                StartGame();
 
-                m_Started = true;
                 float randomDirection = Random.Range(-1.0f, 1.0f);
                 Vector3 forceDir = new Vector3(randomDirection, 1, 0);
                 forceDir.Normalize();
@@ -86,18 +88,29 @@ public class MainManager : MonoBehaviour
                 AudioSource.PlayOneShot(StartGameClip);
             }
         }
-        else if (m_GameOver)
+        else if (m_GameOver || _gamePaused)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                if (!_gamePaused) {
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                }
+                else {
+                    ResumeGame();
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.Escape))
+            {   // quit to menu
+                ResumeGame();
+                if (!m_GameOver) {
+                    GameOver();
+                }
+                SceneManager.LoadScene("menu");
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            GameOver();
-            SceneManager.LoadScene("menu");
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {   // pause game
+            PauseGame();
         }
     }
 
@@ -129,6 +142,36 @@ public class MainManager : MonoBehaviour
         }
     }
 
+    private void StartGame()
+    {
+        ModeInstructions.text = "Space to Start\nESC to Pause";
+        GameOverText.SetActive(false);
+
+        Application.targetFrameRate = -1;
+        QualitySettings.vSyncCount = 1;
+
+        m_Started = true;
+    }
+    private void PauseGame()
+    {
+        ModeInstructions.text = "Space to Continue\nESC to Menu";
+        Cursor.visible = true;
+        _gamePaused = true;
+        Time.timeScale = 0;
+        Application.targetFrameRate = 15;
+    }
+
+    private void ResumeGame()
+    {
+        ModeInstructions.text = "Space to Start\nESC to Pause";
+
+        Application.targetFrameRate = -1;
+        QualitySettings.vSyncCount = 1;
+
+        Time.timeScale = 1;
+        _gamePaused = false;
+        Cursor.visible = false;
+    }
     public void GameOver()
     {
         Ball ball = FindObjectOfType<Ball>();
@@ -142,13 +185,14 @@ public class MainManager : MonoBehaviour
 
         UpdateHighScore();
 
-        Cursor.visible = true;
+        ModeInstructions.text = "Space to Restart\nESC to Menu";
 
+        Cursor.visible = true;
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 30;
     }
 
-    void UpdateHighScore()
+    private void UpdateHighScore()
     {
         var gameState = GameState.Instance;
         HighScoresManager highScoresManager = FindObjectOfType<HighScoresManager>();
@@ -157,6 +201,5 @@ public class MainManager : MonoBehaviour
         {
             gameState.SaveStateToStorage();
         }
-
     }
 }
