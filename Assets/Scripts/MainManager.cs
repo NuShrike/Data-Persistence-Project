@@ -16,6 +16,10 @@ public class MainManager : MonoBehaviour
     public TextMeshProUGUI HighScoreText;
     public TextMeshProUGUI HighScoreName;
 
+    public AudioSource AudioSource;
+    public AudioClip StartGameClip;
+    public AudioClip WinGameClip;
+
     private bool m_Started = false;
     private int m_Points;
     
@@ -78,6 +82,8 @@ public class MainManager : MonoBehaviour
                 // detach Ball from Paddle and launch it
                 Ball.transform.SetParent(null);
                 Ball.AddForce(forceDir * 2.0f, ForceMode.VelocityChange);
+
+                AudioSource.PlayOneShot(StartGameClip);
             }
         }
         else if (m_GameOver)
@@ -117,6 +123,7 @@ public class MainManager : MonoBehaviour
 #endif
             }
             else {
+                AudioSource.PlayOneShot(WinGameClip);
                 GameOver();
             }
         }

@@ -6,12 +6,40 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     private Rigidbody m_Rigidbody;
+    private AudioSource _audioSource;
+
+    public AudioClip BrickSound;
+    public AudioClip WallSound;
+    public AudioClip PaddleSound;
 
     void Start()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
+        _audioSource = GetComponent<AudioSource>();
     }
     
+    private void OnCollisionEnter(Collision other)
+    {
+        string otherTag = other.gameObject.tag;
+        switch(otherTag)
+        {
+        case "Wall":
+            _audioSource.PlayOneShot(WallSound);
+            break;
+
+        case "Brick":
+            _audioSource.PlayOneShot(BrickSound);
+            break;
+
+        case "Paddle":
+            _audioSource.PlayOneShot(PaddleSound);
+            break;
+
+        default:
+            break;
+        }
+    }
+
     private void OnCollisionExit(Collision other)
     {
         var velocity = m_Rigidbody.velocity;

@@ -6,10 +6,13 @@ MonoImporter:
   defaultReferences:
   - BrickPrefab: {fileID: 897975713663390409, guid: 63f25b9733d2bcd4fa2ff6de1264c739, type: 3}
   - Ball: {instanceID: 0}
+  - GameOverText: {instanceID: 0}
   - ScoreText: {instanceID: 0}
   - HighScoreText: {instanceID: 0}
   - HighScoreName: {instanceID: 0}
-  - GameOverText: {instanceID: 0}
+  - AudioSource: {instanceID: 0}
+  - StartGameClip: {fileID: 8300000, guid: 6a55b1210d28e48f9be508821dfab1d3, type: 3}
+  - WinGameClip: {fileID: 8300000, guid: 1713622cd2b3b4eb59001aa73d8b96e4, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
