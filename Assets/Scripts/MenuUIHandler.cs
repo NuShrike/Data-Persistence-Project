@@ -32,6 +32,11 @@ public class MenuUIHandler : MonoBehaviour
         }
     }
 
+    public void OnClearScores()
+    {
+        GameState.Instance.DeleteStateInStorage();
+    }
+
     public void OnQuit()
     {
 #if UNITY_EDITOR

@@ -149,7 +149,7 @@ public class MainManager : MonoBehaviour
         ModeInstructions.text = "Space to Start\nESC to Pause";
         GameOverText.SetActive(false);
 
-        Application.targetFrameRate = -1;
+        Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 1;
 
         m_Started = true;
@@ -167,7 +167,7 @@ public class MainManager : MonoBehaviour
     {
         ModeInstructions.text = "Space to Start\nESC to Pause";
 
-        Application.targetFrameRate = -1;
+        Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 1;
 
         Time.timeScale = 1;

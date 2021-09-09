@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 
 using Newtonsoft.Json;
@@ -55,6 +56,18 @@ public class GameState : SingletonMonoBehavior<GameState>
     {
         string json = JsonConvert.SerializeObject(_state);
         //Debug.Log("SaveStateToStorage: " + json);
+
         File.WriteAllText(Application.persistentDataPath + _saveFileName, json);
+    }
+
+    public void DeleteStateInStorage()
+    {
+        string path = Application.persistentDataPath + _saveFileName;
+        try {
+            File.Delete(path);
+        }
+        catch (Exception /*e*/) {
+
+        }
     }
 }
