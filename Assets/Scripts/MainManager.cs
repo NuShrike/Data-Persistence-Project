@@ -66,7 +66,9 @@ public class MainManager : MonoBehaviour
 
         Cursor.visible = false;
         _gamePaused = false;
+#if UNITY_EDITOR
         _logBricks = false;
+#endif
     }
 
     private void Update()
