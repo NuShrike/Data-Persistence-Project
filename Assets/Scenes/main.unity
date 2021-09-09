@@ -1628,7 +1628,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HighScoreLinePrefab: {fileID: 3662026187472772792, guid: 2b892b09fad8be144b420dea96fc0248, type: 3}
-  MaxNumScores: 3
+  MaxNumScores: 4
 --- !u!114 &1337991704
 MonoBehaviour:
   m_ObjectHideFlags: 0
