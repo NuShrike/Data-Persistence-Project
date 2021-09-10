@@ -208,7 +208,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1700866068}
         m_TargetAssemblyTypeName: MenuUIHandler, Assembly-CSharp
-        m_MethodName: OnStart
+        m_MethodName: OnClearScores
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

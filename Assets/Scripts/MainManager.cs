@@ -89,6 +89,10 @@ public class MainManager : MonoBehaviour
 
                 AudioSource.PlayOneShot(StartGameClip);
             }
+            else if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                SceneManager.LoadScene("menu");
+            }
         }
         else if (m_GameOver || _gamePaused)
         {
